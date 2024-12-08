@@ -19,7 +19,7 @@ Future<List<ListaDeCompras>> fetchListaDeCompras() async {
 class ListaDeCompras {
   final String item;
   final int quantidade;
-  final String unidade; // Ajustado para string
+  final String unidade;
   final double preco;
 
   ListaDeCompras({
@@ -33,7 +33,7 @@ class ListaDeCompras {
     return ListaDeCompras(
       item: json['item'],
       quantidade: json['quantidade'],
-      unidade: json['unidade'], // Ajustado para string
+      unidade: json['unidade'],
       preco: json['preco'],
     );
   }
@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Lista de Compras',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.teal,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: Scaffold(
@@ -69,14 +69,14 @@ class _MyAppState extends State<MyApp> {
             'Lista de Compras',
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 20,
+              fontSize: 22,
             ),
           ),
           centerTitle: true,
-          backgroundColor: Colors.blueAccent,
+          backgroundColor: Colors.teal,
         ),
         body: Container(
-          color: Colors.grey[200],
+          color: Colors.grey[100],
           padding: const EdgeInsets.all(16.0),
           child: Center(
             child: FutureBuilder<List<ListaDeCompras>>(
@@ -95,88 +95,95 @@ class _MyAppState extends State<MyApp> {
                 } else {
                   final data = snapshot.data!;
                   return Card(
-                    elevation: 5,
+                    elevation: 8,
+                    shadowColor: Colors.black.withOpacity(0.2),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
                       child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: DataTable(
-                          columnSpacing: 20,
-                          headingRowColor: MaterialStateColor.resolveWith(
-                              (states) => Colors.blueAccent),
-                          dataRowColor: MaterialStateColor.resolveWith(
-                              (states) => Colors.white),
-                          border: TableBorder.all(
-                            color: Colors.grey.shade300,
-                            width: 1,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal, // Scroll horizontal
+                          child: DataTable(
+                            columnSpacing: 20,
+                            headingRowColor: MaterialStateColor.resolveWith(
+                                (states) => Colors.teal),
+                            dataRowColor: MaterialStateColor.resolveWith(
+                                (states) => Colors.white),
+                            border: TableBorder.all(
+                              color: Colors.grey.shade300,
+                              width: 1,
+                            ),
+                            columns: [
+                              DataColumn(
+                                label: Text(
+                                  'Item',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  'Quantidade',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  'Unidade',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  'Preço',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ],
+                            rows: data
+                                .map(
+                                  (listaDeCompras) => DataRow(
+                                    cells: [
+                                      DataCell(Text(
+                                        listaDeCompras.item,
+                                        style: TextStyle(fontSize: 14),
+                                      )),
+                                      DataCell(Text(
+                                        listaDeCompras.quantidade.toString(),
+                                        style: TextStyle(fontSize: 14),
+                                      )),
+                                      DataCell(Text(
+                                        listaDeCompras.unidade,
+                                        style: TextStyle(fontSize: 14),
+                                      )),
+                                      DataCell(Text(
+                                        listaDeCompras.preco.toStringAsFixed(2),
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontStyle: FontStyle.italic),
+                                      )),
+                                    ],
+                                  ),
+                                )
+                                .toList(),
                           ),
-                          columns: [
-                            DataColumn(
-                              label: Text(
-                                'Item',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                'Quantidade',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                'Unidade',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                'Preço',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ],
-                          rows: data
-                              .map(
-                                (listaDeCompras) => DataRow(
-                                  cells: [
-                                    DataCell(Text(
-                                      listaDeCompras.item,
-                                      style: TextStyle(fontSize: 14),
-                                    )),
-                                    DataCell(Text(
-                                      listaDeCompras.quantidade.toString(),
-                                      style: TextStyle(fontSize: 14),
-                                    )),
-                                    DataCell(Text(
-                                      listaDeCompras.unidade,
-                                      style: TextStyle(fontSize: 14),
-                                    )),
-                                    DataCell(Text(
-                                      listaDeCompras.preco.toStringAsFixed(2),
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontStyle: FontStyle.italic),
-                                    )),
-                                  ],
-                                ),
-                              )
-                              .toList(),
                         ),
                       ),
                     ),
